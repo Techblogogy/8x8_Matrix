@@ -1,8 +1,8 @@
 #include<avr/io.h>
 
-int latchPin = 13;
-int clockPin = 12;
-int dataPin = 11;
+const int latchPin = 13;
+const int clockPin = 12;
+const int dataPin = 11;
 
 #define WIDTH 8
 #define HEIGHT 8
