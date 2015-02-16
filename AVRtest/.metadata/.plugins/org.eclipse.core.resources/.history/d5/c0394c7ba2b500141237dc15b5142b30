@@ -1,0 +1,11 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+int main(int argv, char** argc)
+{
+	uint8_t dt = 0b11111111;
+
+	printf("%d \n", (dt << i ) );
+
+	return 0;
+}

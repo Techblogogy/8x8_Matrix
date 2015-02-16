@@ -1,0 +1,48 @@
+12:07:12 **** Incremental Build of configuration Debug for project Matrix ****
+make all 
+Building file: ../main.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=attiny13 -DF_CPU=10000000UL -MMD -MP -MF"main.d" -MT"main.d" -c -o "main.o" "../main.c"
+../main.c:23:8: warning: built-in function 'y0' declared as non-function [enabled by default]
+ int8_t y0, x0 = 0; //For Loops Secondary XY
+        ^
+../main.c:80:13: warning: 'Logic' defined but not used [-Wunused-function]
+ static void Logic()
+             ^
+Finished building: ../main.c
+ 
+Building target: Matrix.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,Matrix.map -mmcu=attiny13 -o "Matrix.elf"  ./main.o   
+Finished building target: Matrix.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S Matrix.elf  >"Matrix.lss"
+Finished building: Matrix.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex Matrix.elf  "Matrix.hex"
+Finished building: Matrix.hex
+ 
+Create eeprom image (ihex format)
+avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex Matrix.elf  "Matrix.eep"
+Finished building: Matrix.eep
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=attiny13 Matrix.elf
+AVR Memory Usage
+----------------
+Device: attiny13
+
+Program:     490 bytes (47.9% Full)
+(.text + .data + .bootloader)
+
+Data:         25 bytes (39.1% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+12:07:12 Build Finished (took 444ms)
+

@@ -1,0 +1,11 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+int8_t dt = 0b11001100;
+
+int main(void)
+{
+	printf();
+
+	return 0;
+}

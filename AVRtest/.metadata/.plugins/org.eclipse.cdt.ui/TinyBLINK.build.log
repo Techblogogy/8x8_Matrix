@@ -1,0 +1,20 @@
+09:54:49 **** Incremental Build of configuration Debug for project TinyBLINK ****
+make all 
+Invoking: Print Size
+avr-size --format=avr --mcu=attiny13 TinyBLINK.elf
+AVR Memory Usage
+----------------
+Device: attiny13
+
+Program:      82 bytes (8.0% Full)
+(.text + .data + .bootloader)
+
+Data:          0 bytes (0.0% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+09:54:49 Build Finished (took 70ms)
+

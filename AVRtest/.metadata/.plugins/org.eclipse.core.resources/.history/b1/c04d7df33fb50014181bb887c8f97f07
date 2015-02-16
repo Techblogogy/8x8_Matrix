@@ -1,0 +1,89 @@
+#define F_CPU 16000000UL
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+#include <stdlib.h>
+
+#define WIDTH 8
+#define HEIGHT 8
+
+#define CLK 2
+
+int sBuffer[WIDTH*HEIGHT];/* =
+{
+	1,1,1,1,1,1,1,1,
+	1,1,1,1,1,1,1,0,
+	1,1,1,1,1,1,0,0,
+	1,1,1,1,1,0,0,0,
+	1,1,1,1,0,0,0,0,
+	1,1,1,0,0,0,0,0,
+	1,1,0,0,0,0,0,0,
+	1,0,0,0,0,0,0,0
+};*/
+
+int xH, iY, iX = 0;
+
+void Render()
+{
+	for (xH = 0; xH < WIDTH; xH++)
+	{
+		for (iY = 7; iY >= 4; iY--)
+		{
+			if (sBuffer[iY * WIDTH + xH] == 1)
+				PORTB |= _BV(3);
+			else
+				PORTB &= ~_BV(3);
+
+			PORTB |= _BV(4); //Clock HIGH
+			PORTB &= ~_BV(4); //Clock LOW
+		}
+
+		for (iX = 3; iX >= 0; iX--)
+		{
+			if (iX == xH)
+				PORTB &= ~_BV(3);
+			else
+				PORTB |= _BV(3);
+
+			PORTB |= _BV(4); //Clock HIGH
+			PORTB &= ~_BV(4); //Clock LOW
+		}
+
+		for (iY = 0; iY < 4; iY++)
+		{
+			if (sBuffer[iY * WIDTH + xH] == 1)
+				PORTB |= _BV(3);
+			else
+				PORTB &= ~_BV(3);
+
+			PORTB |= _BV(4); //Clock HIGH
+			PORTB &= ~_BV(4); //Clock LOW
+		}
+		for (iX = 4; iX < 8; iX++)
+		{
+			if (iX == xH)
+				PORTB &= ~_BV(3);
+			else
+				PORTB |= _BV(3);
+
+			PORTB |= _BV(4); //Clock HIGH
+			PORTB &= ~_BV(4); //Clock LOW
+		}
+
+		PORTB |= _BV(5); //Latch HIGH
+		PORTB &= ~_BV(5); //Latch LOW
+	}
+}
+
+int main(void)
+{
+	DDRB = 0xFF; //Set PortB as Output
+
+	while (1)
+	{
+		Render();
+	}
+
+	return 0;
+}

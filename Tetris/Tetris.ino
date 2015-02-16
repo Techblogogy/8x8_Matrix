@@ -212,6 +212,8 @@ void setup()
 	//Bitmap test
 	RandomBlock();
 
+
+
 	//Sets Shift Register Pins
 	pinMode(latchPin, OUTPUT);
 	pinMode(clockPin, OUTPUT);
@@ -348,29 +350,32 @@ void Render()
 {
 	for (int y=0; y<HEIGHT; y++)
     {
-		// Activate Row
-		if (y-1 >= 0)
-			PORTD &= ~_BV(y-1);
-		else
-			PORTD &= ~_BV(7);
-		
-		PORTB |= _BV(PORTB5); //Set latch pin HIGH
+		for (int y1=HEIGHT-1; y1>=0; y1--) //Shift Out Column data
+		{
+			if ( (HEIGHT-1-y) == y1 )
+				PORTB &= ~_BV(3);
+			else 
+				PORTB |= _BV(3);
+
+			PORTB |= _BV(4); //Clock HIGH
+			PORTB &= ~_BV(4); //Clock LOW
+		}
 		for (int x=WIDTH-1; x>=0; x--) //Shift Out Row data
 		{
-			digitalWrite(dataPin, sBuffer[y*WIDTH+x]);
-			
-			digitalWrite(clockPin, HIGH);
-			digitalWrite(clockPin, LOW);
+			if (sBuffer[y*WIDTH+x] == 1)
+				PORTB |= _BV(3);
+			else 
+				PORTB &= ~_BV(3);
+
+			PORTB |= _BV(4); //Clock HIGH
+			PORTB &= ~_BV(4); //Clock LOW
 		}
-		PORTB &= ~_BV(PORTB5); //Set latch pin LOW
+
+		//Move Data To Output
+		PORTB |= _BV(PORTB5); //Set latch pin HIGH
       
 		delayMicroseconds(16); //Multiplexing Delay
-      
-		//Disable Row
-		if (y-1 >= 0)
-			PORTD |= _BV(y-1);
-		else
-			PORTD |= _BV(7);
+		PORTB &= ~_BV(PORTB5); //Set latch pin LOW
     }
 }
 
@@ -396,6 +401,6 @@ void RandomBlock()
 	int id = random(B_SIZE); //6;
 
 	b = blocks[id];
-	b.x = 0;
+	b.x = 5;
 	b.y = 0;
 }
