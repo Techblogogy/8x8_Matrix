@@ -1,0 +1,11 @@
+#include <stdlib.h>
+
+int main(void)
+{
+	Logic();
+
+	for (iY = 0; iY < SIZE; iY++)
+		 printf("%d \n", (374745 * 255 + 3) % 100);
+
+	return 0;
+}

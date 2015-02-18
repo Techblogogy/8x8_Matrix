@@ -1,14 +1,8 @@
-12:07:12 **** Incremental Build of configuration Debug for project Matrix ****
+13:59:33 **** Incremental Build of configuration Debug for project Matrix ****
 make all 
 Building file: ../main.c
 Invoking: AVR Compiler
-avr-gcc -Wall -g2 -gstabs -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=attiny13 -DF_CPU=10000000UL -MMD -MP -MF"main.d" -MT"main.d" -c -o "main.o" "../main.c"
-../main.c:23:8: warning: built-in function 'y0' declared as non-function [enabled by default]
- int8_t y0, x0 = 0; //For Loops Secondary XY
-        ^
-../main.c:80:13: warning: 'Logic' defined but not used [-Wunused-function]
- static void Logic()
-             ^
+avr-gcc -Wall -g2 -gstabs -O2 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=attiny13 -DF_CPU=100000UL -MMD -MP -MF"main.d" -MT"main.d" -c -o "main.o" "../main.c"
 Finished building: ../main.c
  
 Building target: Matrix.elf
@@ -34,15 +28,15 @@ AVR Memory Usage
 ----------------
 Device: attiny13
 
-Program:     490 bytes (47.9% Full)
+Program:     946 bytes (92.4% Full)
 (.text + .data + .bootloader)
 
-Data:         25 bytes (39.1% Full)
+Data:         28 bytes (43.8% Full)
 (.data + .bss + .noinit)
 
 
 Finished building: sizedummy
  
 
-12:07:12 Build Finished (took 444ms)
+13:59:33 Build Finished (took 227ms)
 

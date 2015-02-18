@@ -1,0 +1,35 @@
+#include <stdlib.h>
+
+#define SIZE 8
+
+uint8_t tBuffer[SIZE] =
+{
+	0b00000000,
+	0b00000000,
+	0b00000001,
+	0b00000101,
+	0b00000011,
+	0b00000000,
+	0b00000000,
+	0b00000000
+};
+
+int8_t main(void) {
+	uint8_t iY = 2;
+	uint8_t iX = 0;
+
+	uint8_t n = 0;
+
+	for (int8_t y0 = iY - 1; y0 <= iY + 1; y0++) {
+		for (int8_t x0 = iX - 1; x0 <= iX + 1; x0++) {
+			printf("%d \n", SIZE % x0);
+
+			if (((tBuffer[y0 % SIZE] & (1 << (7 - (x0 % SIZE)))) >> (7 - (x0 % SIZE))) == 1)
+				n++;
+		}
+	}
+
+	printf("%d \n", n);
+
+	return 0;
+}

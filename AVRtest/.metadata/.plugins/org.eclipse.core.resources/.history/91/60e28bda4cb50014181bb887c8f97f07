@@ -1,8 +1,0 @@
-#include <stdlib.h>
-
-int8_t dt = 0b11001100;
-
-int main(void)
-{
-	return 0;
-}

@@ -1,0 +1,8 @@
+#include <stdlib.h>
+
+int main(void)
+{
+	for (int iY = 0; iY < 8; iY++) printf("%d \n", 5 % 8);
+
+	return 0;
+}

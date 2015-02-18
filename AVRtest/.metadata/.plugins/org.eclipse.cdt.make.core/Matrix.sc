@@ -428,7 +428,7 @@
 <definedSymbol symbol="__INT24_MIN__=(-__INT24_MAX__-1)"/>
 <definedSymbol symbol="__UINT24_MAX__=16777215UL"/>
 <definedSymbol symbol="__ELF__=1"/>
-<definedSymbol symbol="F_CPU=10000000UL"/>
+<definedSymbol symbol="F_CPU=100000UL"/>
 </collector>
 </instance>
 <instance id="de.innot.avreclipse.configuration.app.release.28143275;de.innot.avreclipse.configuration.app.release.28143275.;de.innot.avreclipse.tool.compiler.winavr.app.release.289229564;de.innot.avreclipse.compiler.winavr.input.804494644">
@@ -859,7 +859,7 @@
 <definedSymbol symbol="__INT24_MIN__=(-__INT24_MAX__-1)"/>
 <definedSymbol symbol="__UINT24_MAX__=16777215UL"/>
 <definedSymbol symbol="__ELF__=1"/>
-<definedSymbol symbol="F_CPU=10000000UL"/>
+<definedSymbol symbol="F_CPU=100000UL"/>
 </collector>
 </instance>
 </scannerInfo>

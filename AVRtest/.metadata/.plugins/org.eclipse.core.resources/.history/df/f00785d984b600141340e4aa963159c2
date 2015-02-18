@@ -1,0 +1,165 @@
+#define F_CPU 10000000UL
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <avr/eeprom.h>
+
+#define SIZE 8
+
+#define CLK 2 //Clock
+#define DT 0 //Data
+#define LTC 1 //Latch
+
+//Stores Coluoms
+uint8_t tBuffer[SIZE] = {0,0,0,0,0,0,0,0};
+uint8_t sBuffer[SIZE] =
+{
+	0b00000000,
+	0b00000000,
+	0b00000001,
+	0b00000101,
+	0b00000011,
+	0b00000000,
+	0b00000000,
+	0b00000000
+};
+
+
+int8_t iY, iX = 0; //For Loops Primary XY
+
+volatile uint32_t tm = 0;
+
+static void Render()
+{
+	for (iY = 0; iY < SIZE; iY++)
+	{
+//		for (iX = 7; iX >= 4; iX--)
+//		{
+//			if ( ((sBuffer[iX] & (1 << (7-iY))) >> (7-iY)) == 1)
+//				PORTB |= _BV(0);
+//			else
+//				PORTB &= ~_BV(0);
+//
+//			PORTB |= _BV(2); //Clock HIGH
+//			PORTB &= ~_BV(2); //Clock LOW
+//		}
+//
+//		for (iX = 3; iX >= 0; iX--)
+//		{
+//			if (iX == iY)
+//				PORTB &= ~_BV(0);
+//			else
+//				PORTB |= _BV(0);
+//
+//			PORTB |= _BV(2); //Clock HIGH
+//			PORTB &= ~_BV(2); //Clock LOW
+//		}
+//
+//		for (iX = 0; iX < 4; iX++)
+//		{
+//			if ( ((sBuffer[iX] & (1 << (7-iY))) >> (7-iY)) == 1)
+//				PORTB |= _BV(0);
+//			else
+//				PORTB &= ~_BV(0);
+//
+//			PORTB |= _BV(2); //Clock HIGH
+//			PORTB &= ~_BV(2); //Clock LOW
+//		}
+//		for (iX = 4; iX < 8; iX++)
+//		{
+//			if (iX == iY)
+//				PORTB &= ~_BV(0);
+//			else
+//				PORTB |= _BV(0);
+//
+//			PORTB |= _BV(2); //Clock HIGH
+//			PORTB &= ~_BV(2); //Clock LOW
+//		}
+
+		for (iX=0; iX<16; iX++)
+		{
+			if (iX<=3)
+			{
+				if ( ((sBuffer[7-iX] & (1 << (7-iY))) >> (7-iY)) == 1)
+					PORTB |= _BV(DT);
+				else
+					PORTB &= ~_BV(DT);
+			}
+			else
+			{
+				if (iX == iY)
+					PORTB &= ~_BV(DT);
+				else
+					PORTB |= _BV(DT);
+			}
+
+			PORTB |= _BV(CLK); //Clock HIGH
+			PORTB &= ~_BV(CLK); //Clock LOW
+		}
+
+		PORTB |= _BV(LTC); //Latch HIGH
+		PORTB &= ~_BV(LTC); //Latch LOW
+	}
+}
+
+static void Logic()
+{
+	int8_t y0, x0 = 0; //For Loops Secondary XY
+	int8_t n = 0; //Neighbours
+
+	for (iY=0; iY<SIZE; iY++)
+		tBuffer[iY] = sBuffer[iY];
+
+	//Calculate
+	for (iY = 0; iY < SIZE; iY++) {
+		for (iX = 0; iX < SIZE; iX++) {
+			n = 0;
+
+			for (y0 = iY - 1; y0 <= iY + 1; y0++) {
+				for (x0 = iX - 1; x0 <= iX + 1; x0++) {
+					if (((tBuffer[y0%SIZE] & (1 << (7-(x0%SIZE)))) >> (7-(x0%SIZE))) == 1) n++;
+				}
+			}
+
+			if (n == 3)
+				sBuffer[iY] |= (1 << (7-iX));
+			else if (n!=4)
+				sBuffer[iY] &= ~(1 << (7-iX));
+		}
+	}
+}
+//
+//ISR (TIM0_COMPA_vect)
+//{
+//    tm++;
+//}
+
+int main(void)
+{
+	DDRB = 0xFF; //Set PortB as Output
+
+//	TCCR0A = 0;
+//	TCCR0B = 0;
+//
+//	OCR0A = 15624;
+//	TCCR0B |= (1 << WGM02);
+//	TCCR0B |= (1 << CS00);
+//	TCCR0B |= (1 << CS02);
+//
+//	TIMSK0 |= (1 << OCIE0A);
+//
+//	sei();
+
+	while (1)
+	{
+		if (tm > 1)
+		{
+			//Logic();
+			tm = 0;
+		}
+
+		Render();
+	}
+
+	return 0;
+}

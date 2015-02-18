@@ -14,5 +14,6 @@ avrdudepropertypage/weight_top_collapsed=950
 avrdudepropertypage/weight_top_expanded=80
 avrpaths//systempath/AVRDUDE=/usr/local/CrossPack-AVR-20131216/bin
 avrpaths//systempath/AVRGCC=/usr/local/CrossPack-AVR-20131216/bin
+avrpaths//systempath/AVRINCLUDE=/usr/local/CrossPack-AVR-20131216/avr/include
 avrpaths//systempath/MAKE=/usr/bin
 eclipse.preferences.version=1

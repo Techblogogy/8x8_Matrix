@@ -1,0 +1,32 @@
+#include <stdlib.h>
+
+#define SIZE 8
+
+uint8_t sBuffer[SIZE] =
+{
+	0b00000000,
+	0b00000000,
+	0b00000001,
+	0b00000101,
+	0b00000011,
+	0b00000000,
+	0b00000000,
+	0b00000000
+};
+
+int main(void) {
+	int iY = 0;
+	int iX = 0;
+
+	int n = 0;
+
+	for (int y0 = iY - 1; y0 <= iY + 1; y0++) {
+		for (int x0 = iX - 1; x0 <= iX + 1; x0++) {
+			if (((tBuffer[y0 % SIZE] & (1 << (7 - (x0 % SIZE))))
+					>> (7 - (x0 % SIZE))) == 1)
+				n++;
+		}
+	}
+
+	return 0;
+}
