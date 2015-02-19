@@ -1,4 +1,4 @@
-13:59:33 **** Incremental Build of configuration Debug for project Matrix ****
+16:13:34 **** Incremental Build of configuration Debug for project Matrix ****
 make all 
 Building file: ../main.c
 Invoking: AVR Compiler
@@ -28,15 +28,15 @@ AVR Memory Usage
 ----------------
 Device: attiny13
 
-Program:     946 bytes (92.4% Full)
+Program:     916 bytes (89.5% Full)
 (.text + .data + .bootloader)
 
-Data:         28 bytes (43.8% Full)
+Data:         20 bytes (31.2% Full)
 (.data + .bss + .noinit)
 
 
 Finished building: sizedummy
  
 
-13:59:33 Build Finished (took 227ms)
+16:13:34 Build Finished (took 170ms)
 

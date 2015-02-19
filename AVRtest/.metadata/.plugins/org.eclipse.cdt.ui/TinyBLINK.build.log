@@ -1,4 +1,4 @@
-15:53:47 **** Incremental Build of configuration Debug for project TinyBLINK ****
+16:13:34 **** Incremental Build of configuration Debug for project TinyBLINK ****
 make all 
 Invoking: Print Size
 avr-size --format=avr --mcu=attiny13 TinyBLINK.elf
@@ -16,5 +16,5 @@ Data:          0 bytes (0.0% Full)
 Finished building: sizedummy
  
 
-15:53:47 Build Finished (took 74ms)
+16:13:34 Build Finished (took 70ms)
 

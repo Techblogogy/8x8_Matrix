@@ -1,10 +1,10 @@
-19:47:26 **** Incremental Build of configuration Debug for project Tetris ****
+21:10:47 **** Incremental Build of configuration Debug for project Tetris ****
 make all 
 Building file: ../main.c
 Invoking: AVR Compiler
 avr-gcc -Wall -g2 -gstabs -O2 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=attiny13 -DF_CPU=100000UL -MMD -MP -MF"main.d" -MT"main.d" -c -o "main.o" "../main.c"
 ../main.c: In function 'main':
-../main.c:113:10: warning: unused variable 'seed' [-Wunused-variable]
+../main.c:145:10: warning: unused variable 'seed' [-Wunused-variable]
   uint8_t seed = ADCL; //Generated Seed
           ^
 Finished building: ../main.c
@@ -32,15 +32,18 @@ AVR Memory Usage
 ----------------
 Device: attiny13
 
-Program:     450 bytes (43.9% Full)
+Program:     514 bytes (50.2% Full)
 (.text + .data + .bootloader)
 
-Data:         12 bytes (18.8% Full)
+Data:         25 bytes (39.1% Full)
 (.data + .bss + .noinit)
+
+EEPROM:       45 bytes (70.3% Full)
+(.eeprom)
 
 
 Finished building: sizedummy
  
 
-19:47:26 Build Finished (took 229ms)
+21:10:47 Build Finished (took 180ms)
 
