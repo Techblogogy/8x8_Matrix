@@ -1,17 +1,13 @@
-21:10:47 **** Incremental Build of configuration Debug for project Tetris ****
+11:00:50 **** Incremental Build of configuration Debug for project Tetris ****
 make all 
 Building file: ../main.c
 Invoking: AVR Compiler
-avr-gcc -Wall -g2 -gstabs -O2 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=attiny13 -DF_CPU=100000UL -MMD -MP -MF"main.d" -MT"main.d" -c -o "main.o" "../main.c"
-../main.c: In function 'main':
-../main.c:145:10: warning: unused variable 'seed' [-Wunused-variable]
-  uint8_t seed = ADCL; //Generated Seed
-          ^
+avr-gcc -Wall -g2 -gstabs -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega328p -DF_CPU=1600000UL -MMD -MP -MF"main.d" -MT"main.d" -c -o "main.o" "../main.c"
 Finished building: ../main.c
  
 Building target: Tetris.elf
 Invoking: AVR C Linker
-avr-gcc -Wl,-Map,Tetris.map -mmcu=attiny13 -o "Tetris.elf"  ./main.o   
+avr-gcc -Wl,-Map,Tetris.map -mmcu=atmega328p -o "Tetris.elf"  ./main.o   
 Finished building target: Tetris.elf
  
 Invoking: AVR Create Extended Listing
@@ -27,18 +23,18 @@ avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ih
 Finished building: Tetris.eep
  
 Invoking: Print Size
-avr-size --format=avr --mcu=attiny13 Tetris.elf
+avr-size --format=avr --mcu=atmega328p Tetris.elf
 AVR Memory Usage
 ----------------
-Device: attiny13
+Device: atmega328p
 
-Program:     514 bytes (50.2% Full)
+Program:    1642 bytes (5.0% Full)
 (.text + .data + .bootloader)
 
-Data:         25 bytes (39.1% Full)
+Data:         41 bytes (2.0% Full)
 (.data + .bss + .noinit)
 
-EEPROM:       45 bytes (70.3% Full)
+EEPROM:       45 bytes (4.4% Full)
 (.eeprom)
 
 

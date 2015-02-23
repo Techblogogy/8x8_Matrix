@@ -1,13 +1,18 @@
-16:13:34 **** Incremental Build of configuration Debug for project Matrix ****
+13:58:23 **** Incremental Build of configuration Debug for project Matrix ****
 make all 
 Building file: ../main.c
 Invoking: AVR Compiler
-avr-gcc -Wall -g2 -gstabs -O2 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=attiny13 -DF_CPU=100000UL -MMD -MP -MF"main.d" -MT"main.d" -c -o "main.o" "../main.c"
+avr-gcc -Wall -g2 -gstabs -O2 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega328p -DF_CPU=1600000UL -MMD -MP -MF"main.d" -MT"main.d" -c -o "main.o" "../main.c"
+In file included from ../main.c:2:0:
+../main.c: In function 'TIM0_COMPA_vect':
+../main.c:106:6: warning: 'TIM0_COMPA_vect' appears to be a misspelled signal handler [enabled by default]
+ ISR (TIM0_COMPA_vect) {
+      ^
 Finished building: ../main.c
  
 Building target: Matrix.elf
 Invoking: AVR C Linker
-avr-gcc -Wl,-Map,Matrix.map -mmcu=attiny13 -o "Matrix.elf"  ./main.o   
+avr-gcc -Wl,-Map,Matrix.map -mmcu=atmega328p -o "Matrix.elf"  ./main.o   
 Finished building target: Matrix.elf
  
 Invoking: AVR Create Extended Listing
@@ -23,20 +28,20 @@ avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ih
 Finished building: Matrix.eep
  
 Invoking: Print Size
-avr-size --format=avr --mcu=attiny13 Matrix.elf
+avr-size --format=avr --mcu=atmega328p Matrix.elf
 AVR Memory Usage
 ----------------
-Device: attiny13
+Device: atmega328p
 
-Program:     916 bytes (89.5% Full)
+Program:    1122 bytes (3.4% Full)
 (.text + .data + .bootloader)
 
-Data:         20 bytes (31.2% Full)
+Data:         20 bytes (1.0% Full)
 (.data + .bss + .noinit)
 
 
 Finished building: sizedummy
  
 
-16:13:34 Build Finished (took 170ms)
+13:58:23 Build Finished (took 232ms)
 

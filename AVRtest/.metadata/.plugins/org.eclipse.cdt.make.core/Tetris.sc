@@ -326,13 +326,17 @@
 <definedSymbol symbol="__AVR=1"/>
 <definedSymbol symbol="__AVR__=1"/>
 <definedSymbol symbol="AVR=1"/>
-<definedSymbol symbol="__AVR_ARCH__=25"/>
-<definedSymbol symbol="__AVR_ATtiny13__=1"/>
+<definedSymbol symbol="__AVR_ARCH__=5"/>
+<definedSymbol symbol="__AVR_ATmega328P__=1"/>
 <definedSymbol symbol="__AVR_HAVE_MOVW__=1"/>
 <definedSymbol symbol="__AVR_HAVE_LPMX__=1"/>
+<definedSymbol symbol="__AVR_ENHANCED__=1"/>
+<definedSymbol symbol="__AVR_HAVE_MUL__=1"/>
+<definedSymbol symbol="__AVR_MEGA__=1"/>
+<definedSymbol symbol="__AVR_HAVE_JMP_CALL__=1"/>
 <definedSymbol symbol="__AVR_2_BYTE_PC__=1"/>
-<definedSymbol symbol="__AVR_HAVE_8BIT_SP__=1"/>
-<definedSymbol symbol="__AVR_SP8__=1"/>
+<definedSymbol symbol="__AVR_HAVE_16BIT_SP__=1"/>
+<definedSymbol symbol="__AVR_HAVE_SPH__=1"/>
 <definedSymbol symbol="__AVR_SFR_OFFSET__=0x20"/>
 <definedSymbol symbol="__WITH_AVRLIBC__=1"/>
 <definedSymbol symbol="__FLASH=1"/>
@@ -428,7 +432,8 @@
 <definedSymbol symbol="__INT24_MIN__=(-__INT24_MAX__-1)"/>
 <definedSymbol symbol="__UINT24_MAX__=16777215UL"/>
 <definedSymbol symbol="__ELF__=1"/>
-<definedSymbol symbol="F_CPU=100000UL"/>
+<definedSymbol symbol="F_CPU=800000UL"/>
+<definedSymbol symbol="F_CPU=1600000UL"/>
 </collector>
 </instance>
 <instance id="de.innot.avreclipse.configuration.app.release.787761201;de.innot.avreclipse.configuration.app.release.787761201.;de.innot.avreclipse.tool.compiler.winavr.app.release.319064016;de.innot.avreclipse.compiler.winavr.input.59871000">
@@ -757,13 +762,17 @@
 <definedSymbol symbol="__AVR=1"/>
 <definedSymbol symbol="__AVR__=1"/>
 <definedSymbol symbol="AVR=1"/>
-<definedSymbol symbol="__AVR_ARCH__=25"/>
-<definedSymbol symbol="__AVR_ATtiny13__=1"/>
+<definedSymbol symbol="__AVR_ARCH__=5"/>
+<definedSymbol symbol="__AVR_ATmega328P__=1"/>
 <definedSymbol symbol="__AVR_HAVE_MOVW__=1"/>
 <definedSymbol symbol="__AVR_HAVE_LPMX__=1"/>
+<definedSymbol symbol="__AVR_ENHANCED__=1"/>
+<definedSymbol symbol="__AVR_HAVE_MUL__=1"/>
+<definedSymbol symbol="__AVR_MEGA__=1"/>
+<definedSymbol symbol="__AVR_HAVE_JMP_CALL__=1"/>
 <definedSymbol symbol="__AVR_2_BYTE_PC__=1"/>
-<definedSymbol symbol="__AVR_HAVE_8BIT_SP__=1"/>
-<definedSymbol symbol="__AVR_SP8__=1"/>
+<definedSymbol symbol="__AVR_HAVE_16BIT_SP__=1"/>
+<definedSymbol symbol="__AVR_HAVE_SPH__=1"/>
 <definedSymbol symbol="__AVR_SFR_OFFSET__=0x20"/>
 <definedSymbol symbol="__WITH_AVRLIBC__=1"/>
 <definedSymbol symbol="__FLASH=1"/>
@@ -859,7 +868,7 @@
 <definedSymbol symbol="__INT24_MIN__=(-__INT24_MAX__-1)"/>
 <definedSymbol symbol="__UINT24_MAX__=16777215UL"/>
 <definedSymbol symbol="__ELF__=1"/>
-<definedSymbol symbol="F_CPU=100000UL"/>
+<definedSymbol symbol="F_CPU=800000UL"/>
 </collector>
 </instance>
 </scannerInfo>
