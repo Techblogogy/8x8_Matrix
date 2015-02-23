@@ -1,10 +1,13 @@
 //DONE Add Full Row Detection
 //DONE Left, Right Piece Movement
-//TODO Add Left, Right Collision Detection
+//DONE Add Left, Right Collision Detection
 //DONE Redefine Pieces For New System
-//TODO Add Random Block Spawn
+//DONE Add Random Block Spawn
 //TODO Add Game Over Logic
+//TODO Add Right Edge Detection
 //DONE Add Rotation
+
+#include <stdlib.h>
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -16,21 +19,28 @@
 #define DT 3 // 0 //Data
 #define LTC 4 // 1 //Latch
 
-volatile uint32_t tm = 0; //Time Counter
-volatile uint32_t bTm = 0;
+//Timers Data
+volatile uint32_t tm = 0; //Logic Timer Tick
+volatile uint32_t bTm = 0; //Buttons Timer Tick
+
+uint8_t seed;
 
 //Display Data
 uint8_t tBuffer[SIZE];
 uint8_t sBuffer[SIZE]; //Main Rendering Buffer
 
 //Store Tetris Data in EEPROM
-uint8_t EEMEM Iblk[5] = { 2, 4,0b11110000, 2,0b10101010 };
-uint8_t EEMEM Jblk[9] = { 4, 4,0b10001110, 2,0b11101000, 4,0b11100010, 2,0b01011100 };
-uint8_t EEMEM Lblk[9] = { 4, 4,0b00101110, 2,0b10101100, 4,0b11101000, 2,0b11010100 };
-uint8_t EEMEM Oblk[3] = { 1, 2,0b11110000 };
-uint8_t EEMEM Sblk[5] = { 2, 4,0b01101100, 2,0b10110100 };
-uint8_t EEMEM Tblk[9] = { 4, 4,0b01001110, 2,0b10111000, 4,0b11100100, 2,0b01110100 };
-uint8_t EEMEM Zblk[5] = { 2, 4,0b11000110, 2,0b01111000 };
+//Block Structure { Amount Of Tetrominos, Width Of Tetromino, Tetromino Data }
+#define BLN 7
+uint8_t EEMEM Blk[BLN][9] = {
+		{ 2, 4,0b11110000, 2,0b10101010 },
+		{ 4, 4,0b10001110, 2,0b11101000, 4,0b11100010, 2,0b01011100 },
+		{ 4, 4,0b00101110, 2,0b10101100, 4,0b11101000, 2,0b11010100 },
+		{ 1, 2,0b11110000 },
+		{ 2, 4,0b01101100, 2,0b10110100 },
+		{ 4, 4,0b01001110, 2,0b10111000, 4,0b11100100, 2,0b01110100 },
+		{ 2, 4,0b11000110, 2,0b01111000 }
+};
 
 uint8_t trs[9]; //Current Tetris Object
 
@@ -117,13 +127,18 @@ static void RenderB() {
 			rw = rw << (oldX-xS);
 
 		//Collision Check
-		if ( ((tBuffer[yS + h - 1] & rw) != 0) || ( rw != 0 && (yS+h-1) >= 8) || ( (rw&1) != 0 && xS+trs[id + 1]-2 >= 8 ) ) {
+		if ( ((tBuffer[yS + h - 1] & rw) != 0) || ( rw != 0 && (yS+h-1) >= 8) || ( (rw&1) != 1 && xS+trs[id+1]-1 >= 8 ) ) {
 			if (oldY != yS) {
 				xS = 0; //Reset X
 				oldX = 0;
 
 				yS = 0; //Reset Y
 				oldY = 0;
+
+				id = 0;
+				oldId = 0;
+
+				eeprom_read_block((void*) &trs, (const void*) &Blk[rand()%7], 9);
 
 				//Clean Rows
 				int i=SIZE-1;
@@ -207,21 +222,19 @@ int main(void) {
 	TIMSK0 |= (1 << OCIE0A); //Set Timer Interrupt On OCR0A Match
 
 	//Setup ADC for Randomization
-//	ADMUX |= (1 << MUX0) | (1 << MUX1); //Set Input Pin PB3
-//	ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0); //Set Division Factor To 128
-//	ADCSRA |= (1 << ADEN); //Enable ADC
-//	ADCSRA |= (1 << ADSC); //Start Conversion
-//	while (ADCSRA & (1 << ADSC)); //Wait until conversion ended
-//	uint8_t seed = ADCL; //Generated Random Seed
+	ADMUX |= (1 << MUX0) | (1 << MUX1); //Set Input Pin PB3
+	ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0); //Set Division Factor To 128
+	ADCSRA |= (1 << ADEN); //Enable ADC
+	ADCSRA |= (1 << ADSC); //Start Conversion
+	while (ADCSRA & (1 << ADSC)); //Wait until conversion ended
+	seed = ADCL; //Generated Random Seed
 
-	//for (int i = 0; i < SIZE; i++) {
-	//sBuffer[i] = 0; //seed;
-	//seed = ((seed*seed)+seed)%100;
-	//}
+	srand(seed); //Random Seed
 
 	sei();
 
-	eeprom_read_block((void*) &trs, (const void*) &Iblk, 9);
+	seed = ((seed*seed)+seed)%100;
+	eeprom_read_block((void*) &trs, (const void*) &Blk[seed%BLN], 9);
 
 	//xS = 5;
 
