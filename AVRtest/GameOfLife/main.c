@@ -2,6 +2,9 @@
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
 
+//Timer Ticks
+#define TMR_TCK 78 //156
+
 #define SIZE 8 //Matrix Size
 
 #define CLK 5 // 2 //Clock
@@ -9,20 +12,45 @@
 #define LTC 4 // 1 //Latch
 
 volatile uint32_t tm = 0;
+volatile uint32_t bTm = 0; //Buttons Timer Tick
+
+uint8_t bl = 0; //To Run Simulation
+uint8_t id = 0; //Current Selection Id
 
 //Display Data
-uint8_t tBuffer[SIZE]/* = { 0, 0, 0, 0, 0, 0, 0, 0 }*/;
-uint8_t sBuffer[SIZE]/* =
-{
-	0b00000000,
-	0b00000000,
-	0b01000000,
-	0b00100000,
-	0b11100000,
-	0b00000000,
-	0b00000000,
-	0b00000000
-}*/;
+uint8_t tBuffer[SIZE];
+uint8_t sBuffer[SIZE];
+
+#define OPT 4
+
+uint8_t EEMEM bfr[OPT][SIZE] = {
+		{0b00000000,
+		 0b01000000,
+		 0b00100000,
+		 0b11100000,
+		 0b00000000,
+		 0b00000000,
+		 0b00000000,
+		 0b00000000},
+
+		 {0b11000110,
+		  0b11001001,
+		  0b00000110,
+		  0b00000000,
+		  0b01100110,
+		  0b10010101,
+		  0b01010010,
+		  0b00100000},
+
+		 {0b00000000,
+		  0b00000000,
+		  0b01110100,
+		  0b01000000,
+		  0b00001100,
+		  0b00110100,
+		  0b01010100,
+		  0b00000000}
+};
 
 static void Render() {
 	int8_t iY, iX = 0; //For Loops Primary XY
@@ -106,23 +134,20 @@ static void Logic() {
 
 ISR (TIMER0_COMPA_vect) {
 	tm++;
-}
-
-ISR (ADC_vect) {
-	ADCSRA |= (1 << ADSC);
+	bTm++;
 }
 
 int main(void) {
 	DDRB = 0xff; //Set PortB as Output
+	DDRD = 0b00000100;
 
 	//Setup Timer
-	TCCR0A |= (1 << WGM02);
-	OCR0A = 98;
-	TIMSK0 |= (1 << OCIE0A);
+	TCCR0A |= (1 << WGM01); //Set Timer To CTC Mode
+	TCCR0B |= (1 << CS00) | (1 << CS02); //Set Scale Factor To Clk/1024
+	OCR0A = TMR_TCK; //Set Timer Interval
+	TIMSK0 |= (1 << OCIE0A); //Set Timer Interrupt On OCR0A Match
 
 	sei();
-
-	TCCR0B |= (1 << CS00) | (1 << CS02);
 
 	//Setup ADC
 	ADMUX |= (1<<MUX0) | (1<<MUX1); //Set Input Pin PB3
@@ -134,25 +159,34 @@ int main(void) {
 
 	for (int i=0; i<SIZE; i++)
 	{
-		sBuffer[i] = seed;
+		eeprom_write_byte( &bfr[OPT-1][i], seed );
+
 		seed = ((seed*seed)+seed)%100;
 	}
 
-	//Setup ADC for Button Input
-	ADMUX = 0; //Clear Multiplexer Selection Register
-	ADCSRA = 0; //Clear Control and Status Register A
-
-	ADMUX |= (1 << MUX1) | (1 << ADLAR);
-	//ADCSRA |= (1<<ADPS2) | (1<<ADPS1); // | (1<<ADPS0); //Set Division Factor To 128
-	ADCSRA |= (1 << ADEN); //Enable ADC
-	ADCSRA |= (1 << ADIE); //Enable ADC Interupt
-
-	sei();
-	//Enable Global Interupt
-	ADCSRA |= (1 << ADSC); //Start ADC
+	PORTD |= _BV(2);
+	eeprom_read_block((void*) &sBuffer, (const void*) &bfr[id], SIZE);
 
 	while (1) {
-		if (tm > 80) {
+		if (((PIND & (1 << 0)) == 0) && (bTm >= 25) && (id+1 < OPT) && (bl==0)) {
+			id++;
+			eeprom_read_block((void*) &sBuffer, (const void*) &bfr[id], SIZE);
+
+			bTm = 0;
+		} else if (((PIND & (1 << 1)) == 0) && (bTm >= 25) && (id-1 >= 0) && (bl==0)) {
+			id--;
+			eeprom_read_block((void*) &sBuffer, (const void*) &bfr[id], SIZE);
+
+			bTm = 0;
+		} else if (((PIND & (1 << 3)) == 0) && (bTm >= 25)) {
+			bl ^= 1;
+
+			PORTD ^= _BV(2);
+
+			bTm = 0;
+		}
+
+		if (tm > 100 && bl==1) {
 			Logic();
 			tm = 0;
 		}

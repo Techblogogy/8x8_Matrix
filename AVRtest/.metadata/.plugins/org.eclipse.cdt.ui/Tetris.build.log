@@ -1,4 +1,4 @@
-12:15:30 **** Incremental Build of configuration Debug for project Tetris ****
+09:55:38 **** Build of configuration Debug for project Tetris ****
 make all 
 Building file: ../main.c
 Invoking: AVR Compiler
@@ -28,10 +28,10 @@ AVR Memory Usage
 ----------------
 Device: atmega328p
 
-Program:    2252 bytes (6.9% Full)
+Program:    2200 bytes (6.7% Full)
 (.text + .data + .bootloader)
 
-Data:         46 bytes (2.2% Full)
+Data:         45 bytes (2.2% Full)
 (.data + .bss + .noinit)
 
 EEPROM:       63 bytes (6.2% Full)
@@ -41,5 +41,5 @@ EEPROM:       63 bytes (6.2% Full)
 Finished building: sizedummy
  
 
-12:15:30 Build Finished (took 221ms)
+09:55:39 Build Finished (took 488ms)
 

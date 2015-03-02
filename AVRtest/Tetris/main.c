@@ -13,6 +13,8 @@
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
 
+#define TMR_TCK 78 //156
+
 #define SIZE 8 //Matrix Size
 
 #define CLK 5 // 2 //Clock
@@ -26,7 +28,7 @@ volatile uint32_t bTm = 0; //Buttons Timer Tick
 uint8_t seed;
 
 //Display Data
-uint8_t tBuffer[SIZE];
+uint8_t tBuffer[SIZE]; //Temporary Rendering Buffer
 uint8_t sBuffer[SIZE]; //Main Rendering Buffer
 
 //Store Tetris Data in EEPROM
@@ -119,7 +121,7 @@ static void RenderB() {
 		uint8_t rw = ((trs[id + 2] & sM) << sA) >> oldX; //Apply Mask To Row
 
 		if (id==oldId)
-		tBuffer[oldY + h - 1] &= ~rw; //Clear Previous Row
+			tBuffer[oldY + h - 1] &= ~rw; //Clear Previous Row
 
 		if (xS >= oldX)
 			rw = rw >> (xS-oldX);
@@ -127,7 +129,7 @@ static void RenderB() {
 			rw = rw << (oldX-xS);
 
 		//Collision Check
-		if ( ((tBuffer[yS + h - 1] & rw) != 0) || ( rw != 0 && (yS+h-1) >= 8) || ( (rw&1) != 1 && xS+trs[id+1]-1 >= 8 ) ) {
+		if ( ((tBuffer[yS + h - 1] & rw) != 0) || ( rw != 0 && (yS+h-1) >= 8) || ( (rw&1) != 0 && xS+trs[id+1]-1 >= 8 ) ) {
 			if (oldY != yS) {
 				xS = 0; //Reset X
 				oldX = 0;
@@ -138,6 +140,7 @@ static void RenderB() {
 				id = 0;
 				oldId = 0;
 
+				//Get New Random Block
 				eeprom_read_block((void*) &trs, (const void*) &Blk[rand()%7], 9);
 
 				//Clean Rows
@@ -195,7 +198,6 @@ static void RenderB() {
 static void Logic() {
 	if (b == 0) {
 		yS++;
-	} else {
 	}
 }
 
@@ -204,13 +206,6 @@ ISR (TIMER0_COMPA_vect) {
 	bTm++;
 }
 
-//Button1 233
-//Button2 42
-//Button3 45
-
-#define PVAL 255
-uint8_t pCtr=0;
-
 int main(void) {
 	DDRB = 0xff; //Set PortB Pins
 	DDRD = 0; //Set PortD as output
@@ -218,7 +213,7 @@ int main(void) {
 	//Setup Timer
 	TCCR0A |= (1 << WGM01); //Set Timer To CTC Mode
 	TCCR0B |= (1 << CS00) | (1 << CS02); //Set Scale Factor To Clk/1024
-	OCR0A = 156; //Set Timer Interval
+	OCR0A = TMR_TCK; //Set Timer Interval
 	TIMSK0 |= (1 << OCIE0A); //Set Timer Interrupt On OCR0A Match
 
 	//Setup ADC for Randomization
@@ -233,8 +228,8 @@ int main(void) {
 
 	sei();
 
-	seed = ((seed*seed)+seed)%100;
-	eeprom_read_block((void*) &trs, (const void*) &Blk[seed%BLN], 9);
+	//seed = ((seed*seed)+seed)%100;
+	eeprom_read_block((void*) &trs, (const void*) &Blk[rand()%BLN], 9);
 
 	//xS = 5;
 
@@ -242,13 +237,13 @@ int main(void) {
 
 	while (1) {
 		//Button Check
-		if ((PIND & (1 << 0)) && (bTm >= 25)) { //Move Right
+		if ((~PIND & (1 << 1)) && (bTm >= 25)) { //Move Right
 			xS++;
 			bTm = 0;
-		} else if ((PIND & (1 << 1)) && (bTm >= 25) && ((xS-1) >= 0) ) { //Move Left
+		} else if ((~PIND & (1 << 0)) && (bTm >= 25) && ((xS-1) >= 0) ) { //Move Left
 			xS--;
 			bTm = 0;
-		} else if ((PIND & (1 << 3)) && (bTm >= 25) ) { //Rotate
+		} else if ((~PIND & (1 << 2)) && (bTm >= 25) ) { //Rotate
 			oldId = id;
 
 			if (id+2 >= trs[0]*2)
