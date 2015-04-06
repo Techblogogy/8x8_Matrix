@@ -1,27 +1,5 @@
-09:55:38 **** Build of configuration Debug for project Tetris ****
+18:51:49 **** Incremental Build of configuration Debug for project Tetris ****
 make all 
-Building file: ../main.c
-Invoking: AVR Compiler
-avr-gcc -Wall -g2 -gstabs -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega328p -DF_CPU=1600000UL -MMD -MP -MF"main.d" -MT"main.d" -c -o "main.o" "../main.c"
-Finished building: ../main.c
- 
-Building target: Tetris.elf
-Invoking: AVR C Linker
-avr-gcc -Wl,-Map,Tetris.map -mmcu=atmega328p -o "Tetris.elf"  ./main.o   
-Finished building target: Tetris.elf
- 
-Invoking: AVR Create Extended Listing
-avr-objdump -h -S Tetris.elf  >"Tetris.lss"
-Finished building: Tetris.lss
- 
-Create Flash image (ihex format)
-avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex Tetris.elf  "Tetris.hex"
-Finished building: Tetris.hex
- 
-Create eeprom image (ihex format)
-avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex Tetris.elf  "Tetris.eep"
-Finished building: Tetris.eep
- 
 Invoking: Print Size
 avr-size --format=avr --mcu=atmega328p Tetris.elf
 AVR Memory Usage
@@ -41,5 +19,5 @@ EEPROM:       63 bytes (6.2% Full)
 Finished building: sizedummy
  
 
-09:55:39 Build Finished (took 488ms)
+18:51:49 Build Finished (took 80ms)
 

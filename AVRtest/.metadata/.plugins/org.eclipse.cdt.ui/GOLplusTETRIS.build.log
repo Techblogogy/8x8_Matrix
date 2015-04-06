@@ -1,0 +1,45 @@
+20:09:15 **** Incremental Build of configuration Debug for project GOLplusTETRIS ****
+make all 
+Building file: ../main.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O2 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega328p -DF_CPU=8000000UL -MMD -MP -MF"main.d" -MT"main.d" -c -o "main.o" "../main.c"
+Finished building: ../main.c
+ 
+Building target: GOLplusTETRIS.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,GOLplusTETRIS.map -mmcu=atmega328p -o "GOLplusTETRIS.elf"  ./main.o   
+Finished building target: GOLplusTETRIS.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S GOLplusTETRIS.elf  >"GOLplusTETRIS.lss"
+Finished building: GOLplusTETRIS.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex GOLplusTETRIS.elf  "GOLplusTETRIS.hex"
+Finished building: GOLplusTETRIS.hex
+ 
+Create eeprom image (ihex format)
+avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex GOLplusTETRIS.elf  "GOLplusTETRIS.eep"
+Finished building: GOLplusTETRIS.eep
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega328p GOLplusTETRIS.elf
+AVR Memory Usage
+----------------
+Device: atmega328p
+
+Program:    3100 bytes (9.5% Full)
+(.text + .data + .bootloader)
+
+Data:         47 bytes (2.3% Full)
+(.data + .bss + .noinit)
+
+EEPROM:       95 bytes (9.3% Full)
+(.eeprom)
+
+
+Finished building: sizedummy
+ 
+
+20:09:15 Build Finished (took 433ms)
+

@@ -33,22 +33,22 @@ uint8_t EEMEM bfr[OPT][SIZE] = {
 		 0b00000000,
 		 0b00000000},
 
-		 {0b11000110,
-		  0b11001001,
-		  0b00000110,
+		 {0b00000000,
+		  0b00100000,
+		  0b00100000,
+		  0b00100000,
 		  0b00000000,
-		  0b01100110,
-		  0b10010101,
-		  0b01010010,
-		  0b00100000},
+		  0b00001110,
+		  0b00011100,
+		  0b00000000},
 
 		 {0b00000000,
+		  0b0000000,
+		  0b00110000,
+		  0b01001000,
+		  0b00110000,
 		  0b00000000,
-		  0b01110100,
-		  0b01000000,
-		  0b00001100,
-		  0b00110100,
-		  0b01010100,
+		  0b00000000,
 		  0b00000000}
 };
 
@@ -139,7 +139,7 @@ ISR (TIMER0_COMPA_vect) {
 
 int main(void) {
 	DDRB = 0xff; //Set PortB as Output
-	DDRD = 0b00000100;
+	DDRD = 0; //Set PortD As Output
 
 	//Setup Timer
 	TCCR0A |= (1 << WGM01); //Set Timer To CTC Mode
@@ -151,6 +151,7 @@ int main(void) {
 
 	//Setup ADC
 	ADMUX |= (1<<MUX0) | (1<<MUX1); //Set Input Pin PB3
+	ADMUX |= (1<<REFS0);
 	ADCSRA |= (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0); //Set Division Factor To 128
 	ADCSRA |= (1<<ADEN); //Enable ADC
 	ADCSRA |= (1<<ADSC); //Start Conversion
@@ -168,17 +169,17 @@ int main(void) {
 	eeprom_read_block((void*) &sBuffer, (const void*) &bfr[id], SIZE);
 
 	while (1) {
-		if (((PIND & (1 << 0)) == 0) && (bTm >= 25) && (id+1 < OPT) && (bl==0)) {
+		if ((PIND & (1 << 1)) && (bTm >= 25) && (id+1 < OPT) && (bl==0)) { // Next Item
 			id++;
 			eeprom_read_block((void*) &sBuffer, (const void*) &bfr[id], SIZE);
 
 			bTm = 0;
-		} else if (((PIND & (1 << 1)) == 0) && (bTm >= 25) && (id-1 >= 0) && (bl==0)) {
+		} else if ((PIND & (1 << 0)) && (bTm >= 25) && (id-1 >= 0) && (bl==0)) { // Prev Item
 			id--;
 			eeprom_read_block((void*) &sBuffer, (const void*) &bfr[id], SIZE);
 
 			bTm = 0;
-		} else if (((PIND & (1 << 3)) == 0) && (bTm >= 25)) {
+		} else if ((PIND & (1 << 2)) && (bTm >= 25)) { // Start Sim
 			bl ^= 1;
 
 			PORTD ^= _BV(2);

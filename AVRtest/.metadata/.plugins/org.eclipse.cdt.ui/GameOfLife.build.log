@@ -1,4 +1,4 @@
-10:02:13 **** Incremental Build of configuration Debug for project GameOfLife ****
+19:22:34 **** Incremental Build of configuration Debug for project GameOfLife ****
 make all 
 Invoking: Print Size
 avr-size --format=avr --mcu=atmega328p GameOfLife.elf
@@ -6,18 +6,18 @@ AVR Memory Usage
 ----------------
 Device: atmega328p
 
-Program:    2010 bytes (6.1% Full)
+Program:    2018 bytes (6.2% Full)
 (.text + .data + .bootloader)
 
 Data:         26 bytes (1.3% Full)
 (.data + .bss + .noinit)
 
-EEPROM:       32 bytes (3.1% Full)
+EEPROM:       40 bytes (3.9% Full)
 (.eeprom)
 
 
 Finished building: sizedummy
  
 
-10:02:13 Build Finished (took 78ms)
+19:22:34 Build Finished (took 72ms)
 

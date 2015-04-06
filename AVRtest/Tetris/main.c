@@ -237,13 +237,13 @@ int main(void) {
 
 	while (1) {
 		//Button Check
-		if ((~PIND & (1 << 1)) && (bTm >= 25)) { //Move Right
+		if ((PIND & (1 << 1)) && (bTm >= 25)) { //Move Right
 			xS++;
 			bTm = 0;
-		} else if ((~PIND & (1 << 0)) && (bTm >= 25) && ((xS-1) >= 0) ) { //Move Left
+		} else if ((PIND & (1 << 0)) && (bTm >= 25) && ((xS-1) >= 0) ) { //Move Left
 			xS--;
 			bTm = 0;
-		} else if ((~PIND & (1 << 2)) && (bTm >= 25) ) { //Rotate
+		} else if ((PIND & (1 << 2)) && (bTm >= 25) ) { //Rotate
 			oldId = id;
 
 			if (id+2 >= trs[0]*2)
